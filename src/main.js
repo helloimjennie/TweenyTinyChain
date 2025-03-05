@@ -1,6 +1,6 @@
 // Code Practice: Tiny Tween Chain
-// Name: Jennie Le
-// Date: 03/03/25
+// Name: Ruby Hirsch
+// Date: 3/3/2025
 
 // CODE ARMOR
 'use strict'

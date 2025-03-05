@@ -20,7 +20,7 @@ class Basics extends Phaser.Scene {
 
         // add sprites
         let tomato = this.add.sprite(centerX, centerY, 'fruitandveg', 'tomato')
-        let verygoodpear= this.add.sprite(64,64,'fruitandveg', 'pear')
+        let verygoodpear = this.add.sprite(64, 64, 'fruitandveg', 'pear')
 
         // add text
         this.instructionText = this.add.bitmapText(centerX, centerY, 'gem_font', '', 24).setOrigin(0.5)
@@ -50,74 +50,58 @@ class Basics extends Phaser.Scene {
             }
         })
 
-        // create tween chain
+        // create pear tween chain
         let pearTweenChain = this.tweens.chain({
             targets: verygoodpear,
+            ease: 'Bounce.easeOut',
             loop: 1,
-            paused: false,
+            paused: true,
             tweens: [
                 {
                     x: w - 64,
-                    duration: 500,
-                    ease: 'Bounce.easeOut',
-                    onComplete: () => {
-                        this.instructionText.text = 'HELLO'
-                        if (verygoodpear.x === w - 64 && verygoodpear.y === h - 64) {
-                            verygoodpear.angle += 90 // Rotate 90 degrees when hitting a corner
-                        }
-                    }
+                    duration: 500
+                },
+                {
+                    angle: 90,
+                    duration: 300
                 },
                 {
                     y: h - 64,
-                    setAngle: 90,
-                    scale: {
-                        from: 1,
-                        to: 2.25
-                    },
                     duration: 1000,
                     ease: 'Sine.easeOut'
                 },
                 {
+                    angle: 180,
+                    duration: 300
+                },
+                {
                     x: 64,
-                    duration: 1500,
-                    onComplete: () => {
-                        if (verygoodpear.x === 64 && verygoodpear.y === h - 64) {
-                            verygoodpear.angle += 90 // Rotate 90 degrees when hitting a corner
-                        }
-                    }
+                    duration: 1500
+                },
+                {
+                    angle: -90,
+                    duration: 300
                 },
                 {
                     y: 64,
-                    duration: 1000,
-                    scale: {
-                        from: 2.25,
-                        to: 1
-                    },
-                    onComplete: () => {
-                        if (verygoodpear.x === 64 && verygoodpear.y === 64) {
-                            verygoodpear.angle += 90 // Rotate 90 degrees when hitting a corner
-                        }
-                    }
+                    duration: 1000
+                },
+                {
+                    angle: 0,
+                    duration: 300
                 }
             ]
-
-            
-
-
-
-
         })
 
+        // add mouse input listener to start tween chain
+        this.input.on('pointerdown', () => {
+            verygoodpear.setPosition(64, 64)
+            verygoodpear.setAngle(0)
+            pearTweenChain.restart()
+        })
 
         // enable scene reload key
         this.reload = this.input.keyboard.addKey('R')
-
-        //mouse input listener
-        this.input.on('pointerdown',() => {
-            verygoodpear.setPosition(64,64)
-            pearTweenChain.restart()
-            verygoodpear.angle = 0
-        })
 
         // update instruction text
         document.getElementById('info').innerHTML = '<strong>Basics.js</strong><br>R: Restart current scene'
